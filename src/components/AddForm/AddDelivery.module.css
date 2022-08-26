@@ -1,0 +1,69 @@
+
+.add-form{
+	background-color: aliceblue;
+	width: 600px;
+	padding: 20px;
+}
+
+.form{
+	display: flex;
+	/* flex-direction: column; */
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+/* .input-block{
+	flex: 0 1 50%;
+	display: flex;
+	flex-direction: column;
+	padding: 3px 23px 15px 23px
+}
+
+.input-block label{
+	line-height: 1.5;
+}
+.input-block input {
+	height: 30px;
+	border: 3px solid aliceblue;
+	box-shadow: 0px 0px 2px rgba(157, 171, 184, 0.559);
+	background-color: white;
+	transition: all .05s ease 0s;
+}
+.input-block input:focus{
+	box-shadow: 0px 0px 4px rgb(157, 171, 184); */
+/* } */
+
+.input-description{
+	flex: 0 1 100%;
+	padding: 3px 23px 15px 23px
+}
+.input-description textarea{
+	width: 100%;
+	height: 80px;
+	padding: 5px;
+	font-size: 14px;
+	resize: none;
+	border-radius: 5px;
+	border: 3px solid aliceblue;
+	box-shadow: 0px 0px 2px rgba(157, 171, 184, 0.559);
+	background-color: white;
+	transition: all .05s ease 0s;
+
+}
+.input-description textarea:focus{
+	box-shadow: 0px 0px 4px rgb(157, 171, 184);
+}
+.input-description label {
+	line-height: 1.5;
+}
+
+@media (max-width: 660px) {
+	.add-form{
+		width: 100%;
+		padding: 15px;
+	}
+}
+
+.input-description.invalid{
+	background-color: red;
+}
