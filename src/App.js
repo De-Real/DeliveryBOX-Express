@@ -1,13 +1,16 @@
 import "./App.css";
 import AddDelivery from "./components/AddForm/AddDelivery";
+import Background from "./components/Background/Background";
+import CartProvider from "./store/ListProvider";
 
 function App() {
   return (
-    <div className="wrapper">
-      <h1> DeliveryBOX Express</h1>
-      <AddDelivery />
-      <div> Just text </div>
-    </div>
+    <CartProvider>
+      <Background>
+        <AddDelivery />
+        <div> Just text </div>
+      </Background>
+    </CartProvider>
   );
 }
 

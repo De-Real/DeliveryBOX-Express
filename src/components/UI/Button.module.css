@@ -19,6 +19,7 @@
   padding-left: 16px;
   padding-right: 16px;
   position: relative;
+  z-index: 1;
   text-align: left;
   text-decoration: none;
   transition: box-shadow .15s,transform .15s;

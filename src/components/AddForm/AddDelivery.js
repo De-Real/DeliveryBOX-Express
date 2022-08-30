@@ -1,7 +1,8 @@
-import { useReducer, useState } from "react";
+import { useContext, useReducer, useState } from "react";
 import Button from "../UI/Button";
 import Input from "../UI/Input";
 import classes from "./AddDelivery.module.css";
+import ListContext from "../../store/list-context";
 
 const AddDelivery = () => {
   const [formIsValid, setFormIsValid] = useState(false);
@@ -35,8 +36,9 @@ const AddDelivery = () => {
       tempObj.date.length > 3
     ) {
       setFormIsValid(true);
+    } else {
+      setFormIsValid(false);
     }
-    console.log(tempObj);
     return tempObj;
   }
 
@@ -53,9 +55,12 @@ const AddDelivery = () => {
     dispatchState({ type: valueType, value: value });
   };
 
+  const ctx = useContext(ListContext);
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatchState({ type: "CLEAR_ALL" });
+    ctx.addItem(state);
   };
 
   return (
