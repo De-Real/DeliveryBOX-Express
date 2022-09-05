@@ -1,11 +1,11 @@
 import { useContext, useReducer, useState } from "react";
-import Button from "../UI/Button";
+import Button from "../UI/Buttons/Button";
 import Input from "../UI/Input";
 import classes from "./AddDelivery.module.css";
 import ListContext from "../../store/list-context";
-
+import Cart from "../UI/Carts/Cart";
 const AddDelivery = () => {
-  const [formIsValid, setFormIsValid] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(true);
   function proccessValues(state, action) {
     if (action.type === "CLEAR_ALL") {
       setFormIsValid(false);
@@ -14,7 +14,8 @@ const AddDelivery = () => {
         from: "",
         to: "",
         deliveryType: "",
-        date: "",
+        sendDate: "",
+        dateCreation: "",
         description: "",
       };
     }
@@ -33,7 +34,7 @@ const AddDelivery = () => {
       tempObj.from.length > 3 &&
       tempObj.to.length > 3 &&
       tempObj.deliveryType.length > 3 &&
-      tempObj.date.length > 3
+      tempObj.sendDate.length > 3
     ) {
       setFormIsValid(true);
     } else {
@@ -44,15 +45,43 @@ const AddDelivery = () => {
 
   const [state, dispatchState] = useReducer(proccessValues, {
     id: Math.random(),
-    from: "",
-    to: "",
-    deliveryType: "",
-    date: "",
-    description: "",
+    from: "Kyiv",
+    to: "Bila Tserkva",
+    deliveryType: "book",
+    sendDate: "2022-08-10",
+    description: "553242",
+    status: "packaging",
   });
 
   const dispatchValues = (value, valueType) => {
     dispatchState({ type: valueType, value: value });
+  };
+
+  const formatDate = (date) => {
+    const sendDate = date.split("-").reverse().join(".");
+    let deliveryDate = new Date();
+    deliveryDate.setDate(
+      new Date(date).getDate() + ((Math.random() * 100) % 3)
+    );
+
+    console.log(deliveryDate);
+    console.log(
+      "delDate",
+      new Date(new Date(deliveryDate) - new Date(date)).getDay()
+    );
+    let status = "packaging";
+    const day = new Date(new Date(deliveryDate) - new Date(date)).getDay();
+    if (day === 0) {
+      status = "delivered";
+    } else if (day === 1) {
+      status = "delivering";
+    }
+
+    return {
+      deliveryDate: deliveryDate.toLocaleString().split(",")[0],
+      sendDate: sendDate,
+      status: status,
+    };
   };
 
   const ctx = useContext(ListContext);
@@ -60,11 +89,18 @@ const AddDelivery = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatchState({ type: "CLEAR_ALL" });
-    ctx.addItem(state);
+	console.log(state.sendDate);
+    let dateObj = formatDate(state.sendDate);
+
+    ctx.addItem({
+      ...state,
+      ...dateObj,
+      dateCreation: new Date().toLocaleString(),
+    });
   };
 
   return (
-    <div className={classes["add-form"]}>
+    <Cart>
       <form className={classes.form}>
         <Input
           placeholder="Send from city"
@@ -94,8 +130,8 @@ const AddDelivery = () => {
           type="date"
           id="date"
           text="Dispatch date"
-          onChange={(event) => dispatchValues(event.target.value, "date")}
-          value={state.date}
+          onChange={(event) => dispatchValues(event.target.value, "sendDate")}
+          value={state.sendDate}
         />
         <div className={classes["input-description"]}>
           <label htmlFor="description">
@@ -116,7 +152,7 @@ const AddDelivery = () => {
           Confirm
         </Button>
       </form>
-    </div>
+    </Cart>
   );
 };
 

@@ -1,0 +1,61 @@
+.item{
+	margin: 10px 0;
+	padding: 5px;
+	border-radius: 5px;
+	border: 3px solid aliceblue;
+	box-shadow: 0px 0px 2px rgba(157, 171, 184, 0.559);
+	background-color: white;
+	transition: all .05s ease 0s;
+}
+
+.item__date span{
+	border: 1px solid black;
+	padding: 0 3px;
+	margin-left: 5px;
+	background-color: rgba(202, 237, 106, 0.551);
+	color: black;
+}
+
+
+.item__locations{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 15px;
+}
+
+.item__from{
+
+}
+
+.item__to{
+	
+}
+
+.item__control{
+
+}
+
+
+
+
+.item__control button{
+	margin: 0px 10px;
+	padding: 2px 15px;
+}
+.item__date{
+	font-size: 12px;
+	margin-bottom: 8px;
+}
+.item__delivery{
+	display: flex;
+	align-items: center;
+	width: 50%;
+}
+
+.item__arrow{
+	background-color: black;
+	height: 1px;
+	flex: 1 1 20%;
+	margin: 0 5px;
+}

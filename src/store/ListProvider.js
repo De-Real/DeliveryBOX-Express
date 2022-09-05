@@ -7,7 +7,7 @@ const defaultState = {
 
 const listReducer = (state, action) => {
   if (action.type === "ADD") {
-    return { items: state.items.unshift(action.value) };
+    return { items: [action.value, ...state.items] };
   }
 };
 
@@ -15,6 +15,7 @@ const ListProvider = (props) => {
   const [listState, dispatchListAction] = useReducer(listReducer, defaultState);
 
   const addItemHandler = (item) => {
+    //  console.log("item", item);
     dispatchListAction({ type: "ADD", value: item });
   };
 
