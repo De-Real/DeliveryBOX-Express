@@ -33,7 +33,9 @@ const DetailedItem = ({
             <p>{status}</p>
           </div>
           {description.length > 0 ? (
-            <div className="description">Description: {description}</div>
+            <div className={classes.description}>
+              Description: <span>{description}</span>
+            </div>
           ) : (
             ""
           )}

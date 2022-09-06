@@ -14,8 +14,10 @@ const DisplayList = () => {
 
   return (
     <Cart className={classes["items-block"]}>
-      <Form value={selectedOption} onSelect={onSelectHandler} />
-      <DisplayItems />
+      <div className={classes["items-wrapper"]}>
+        <Form value={selectedOption} onSelect={onSelectHandler} />
+        <DisplayItems filterParametr={selectedOption} />
+      </div>
     </Cart>
   );
 };

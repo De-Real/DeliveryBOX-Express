@@ -4,7 +4,7 @@ import classes from "./Item.module.css";
 
 const Item = (props) => {
   const item = props.item;
-  console.log(item);
+  console.log(props);
   return (
     <li className={classes.item}>
       <div className={classes["item__date"]}>
@@ -18,8 +18,19 @@ const Item = (props) => {
           <div className={classes["item__to"]}>{item.to}</div>
         </div>
         <div className={classes["item__control"]}>
-          <ButtonControl identifier="delete"> Delete </ButtonControl>
-          <ButtonControl identifier="edit"> Edit </ButtonControl>
+          <ButtonControl
+            identifier="delete"
+            onClick={props.onRemove.bind(null, item.id)}
+          >
+            Delete
+          </ButtonControl>
+          <ButtonControl
+            identifier="edit"
+            onClick={props.onEdit.bind(null, item.id)}
+          >
+            {" "}
+            Edit{" "}
+          </ButtonControl>
         </div>
       </div>
       <DetailedItem

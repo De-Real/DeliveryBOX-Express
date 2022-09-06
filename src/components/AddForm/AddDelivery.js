@@ -5,10 +5,13 @@ import classes from "./AddDelivery.module.css";
 import ListContext from "../../store/list-context";
 import Cart from "../UI/Carts/Cart";
 const AddDelivery = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const [formIsValid, setFormIsValid] = useState(true);
   function proccessValues(state, action) {
     if (action.type === "CLEAR_ALL") {
       setFormIsValid(false);
+      setIsOpen((curValue) => !curValue);
       return {
         id: Math.random(),
         from: "",
@@ -89,7 +92,7 @@ const AddDelivery = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatchState({ type: "CLEAR_ALL" });
-	console.log(state.sendDate);
+    console.log(state.sendDate);
     let dateObj = formatDate(state.sendDate);
 
     ctx.addItem({
@@ -99,59 +102,75 @@ const AddDelivery = () => {
     });
   };
 
+  const onAddHandler = () => {
+    setIsOpen((curValue) => !curValue);
+  };
+
   return (
     <Cart>
-      <form className={classes.form}>
-        <Input
-          placeholder="Send from city"
-          id="from"
-          onChange={(event) => dispatchValues(event.target.value, "from")}
-          text="Delivery from"
-          value={state.from}
-        />
-        {/* add icon of the arrow */}
-        <Input
-          placeholder="Send to city"
-          id="to"
-          onChange={(event) => dispatchValues(event.target.value, "to")}
-          text="Delivery to"
-          value={state.to}
-        />
-        <Input
-          placeholder="e.g Gift, Book etc."
-          id="delivery-type"
-          onChange={(event) =>
-            dispatchValues(event.target.value, "deliveryType")
-          }
-          text={"Type of the delivery"}
-          value={state.deliveryType}
-        />
-        <Input
-          type="date"
-          id="date"
-          text="Dispatch date"
-          onChange={(event) => dispatchValues(event.target.value, "sendDate")}
-          value={state.sendDate}
-        />
-        <div className={classes["input-description"]}>
-          <label htmlFor="description">
-            {`Comment. Symbols: ${state.description.length}/360`}{" "}
-          </label>
-          <textarea
-            value={state.description}
-            placeholder="Comments to the delivery (not necessary)"
-            id="description"
-            onChange={(event) =>
-              dispatchValues(event.target.value, "description")
-            }
-          ></textarea>
-        </div>
-        {/* 1. add pulse button when form is correct  */}
-        {/* 2.end button */}
-        <Button isValid={formIsValid} onClick={onSubmitHandler}>
-          Confirm
+      {!isOpen && (
+        <Button isValid={true} onClick={onAddHandler}>
+          Add delivery
         </Button>
-      </form>
+      )}
+      {isOpen && (
+        <form className={classes.form}>
+          <Input
+            placeholder="Send from city"
+            id="from"
+            onChange={(event) => dispatchValues(event.target.value, "from")}
+            text="Delivery from"
+            value={state.from}
+          />
+          {/* add icon of the arrow */}
+          <Input
+            placeholder="Send to city"
+            id="to"
+            onChange={(event) => dispatchValues(event.target.value, "to")}
+            text="Delivery to"
+            value={state.to}
+          />
+          <Input
+            placeholder="e.g Gift, Book etc."
+            id="delivery-type"
+            onChange={(event) =>
+              dispatchValues(event.target.value, "deliveryType")
+            }
+            text={"Type of the delivery"}
+            value={state.deliveryType}
+          />
+          <Input
+            type="date"
+            id="date"
+            text="Dispatch date"
+            onChange={(event) => dispatchValues(event.target.value, "sendDate")}
+            value={state.sendDate}
+          />
+          <div className={classes["input-description"]}>
+            <label htmlFor="description">
+              {`Comment. Symbols: ${state.description.length}/360`}{" "}
+            </label>
+            <textarea
+              value={state.description}
+              placeholder="Comments to the delivery (not necessary)"
+              id="description"
+              onChange={(event) =>
+                dispatchValues(event.target.value, "description")
+              }
+            ></textarea>
+          </div>
+          {/* 1. add pulse button when form is correct  */}
+          {/* 2.end button */}
+          <div>
+            <Button isValid={formIsValid} onClick={onSubmitHandler}>
+              Confirm
+            </Button>
+            <Button isValid={true} isCancel={true} onClick={onAddHandler}>
+              Cancel
+            </Button>
+          </div>
+        </form>
+      )}
     </Cart>
   );
 };
