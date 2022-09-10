@@ -1,13 +1,14 @@
-import { useContext, useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import Button from "../UI/Buttons/Button";
 import Input from "../UI/Input";
 import classes from "./AddDelivery.module.css";
 import ListContext from "../../store/list-context";
 import Cart from "../UI/Carts/Cart";
+
 const AddDelivery = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const [formIsValid, setFormIsValid] = useState(true);
+
   function proccessValues(state, action) {
     if (action.type === "CLEAR_ALL") {
       setFormIsValid(false);
@@ -33,6 +34,8 @@ const AddDelivery = () => {
     }
 
     tempObj = { ...tempObj, [action.type]: action.value };
+
+    let { from, to, deliveryType, sendDate } = tempObj;
     if (
       tempObj.from.length > 3 &&
       tempObj.to.length > 3 &&
@@ -92,7 +95,6 @@ const AddDelivery = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatchState({ type: "CLEAR_ALL" });
-    console.log(state.sendDate);
     let dateObj = formatDate(state.sendDate);
 
     ctx.addItem({
