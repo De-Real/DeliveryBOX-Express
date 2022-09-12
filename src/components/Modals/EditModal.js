@@ -1,18 +1,20 @@
 import { useContext, useReducer, useState } from "react";
 import ListContext from "../../store/list-context";
-import AddDelivery from "../AddForm/AddDelivery";
+import ReactDOM from "react-dom";
 import Button from "../UI/Buttons/Button";
 import Cart from "../UI/Carts/Cart";
 import Input from "../UI/Input";
 import classes from "./EditModal.module.css";
+import ModalContext from "../../store/modal-context";
 
 const EditModal = (props) => {
+  const modalContext = useContext(ModalContext);
+
   const [formIsValid, setFormIsValid] = useState(true);
 
   function proccessValues(state, action) {
     if (action.type === "CLEAR_ALL") {
       setFormIsValid(false);
-      // setIsOpen((curValue) => !curValue);
       return {
         id: Math.random(),
         from: "",
@@ -23,6 +25,7 @@ const EditModal = (props) => {
         description: "",
       };
     }
+
     let tempObj = { ...state };
 
     if (action.type === "description" && action.value.length > 360) {
@@ -37,10 +40,10 @@ const EditModal = (props) => {
 
     let { from, to, deliveryType, sendDate } = tempObj;
     if (
-      tempObj.from.length > 3 &&
-      tempObj.to.length > 3 &&
-      tempObj.deliveryType.length > 3 &&
-      tempObj.sendDate.length > 3
+      from.length > 3 &&
+      to.length > 3 &&
+      deliveryType.length > 3 &&
+      sendDate.length > 3
     ) {
       setFormIsValid(true);
     } else {
@@ -49,71 +52,79 @@ const EditModal = (props) => {
     return tempObj;
   }
 
+  console.log("modal", modalContext.item);
+
+  const {
+    dateCreation,
+    deliveryDate,
+    id,
+    status,
+    sendDate,
+    ...restProperties
+  } = modalContext.item;
   const [state, dispatchState] = useReducer(proccessValues, {
-    id: Math.random(),
-    from: "Kyiv",
-    to: "Bila Tserkva",
-    deliveryType: "book",
-    sendDate: "2022-08-10",
-    description: "553242",
-    status: "packaging",
+    ...restProperties,
+    sendDate: sendDate.split(".").reverse().join("-"),
   });
+
+  const formatDate = (date) => {
+    const sendDate = date.split("-").reverse().join(".");
+    let deliveryDate = new Date();
+    deliveryDate.setDate(
+      new Date(date).getDate() + ((Math.random() * 100) % 3)
+    );
+
+    console.log(deliveryDate);
+    console.log(
+      "delDate",
+      new Date(new Date(deliveryDate) - new Date(date)).getDay()
+    );
+    let status = "packaging";
+    const day = new Date(new Date(deliveryDate) - new Date(date)).getDay();
+    if (day === 0) {
+      status = "delivered";
+    } else if (day === 1) {
+      status = "delivering";
+    }
+
+    return {
+      deliveryDate: deliveryDate.toLocaleString().split(",")[0],
+      sendDate: sendDate,
+      status: status,
+    };
+  };
 
   const dispatchValues = (value, valueType) => {
     dispatchState({ type: valueType, value: value });
   };
 
-  //   const formatDate = (date) => {
-  //     const sendDate = date.split("-").reverse().join(".");
-  //     let deliveryDate = new Date();
-  //     deliveryDate.setDate(
-  //       new Date(date).getDate() + ((Math.random() * 100) % 3)
-  //     );
-
-  //     console.log(deliveryDate);
-  //     console.log(
-  //       "delDate",
-  //       new Date(new Date(deliveryDate) - new Date(date)).getDay()
-  //     );
-  //     let status = "packaging";
-  //     const day = new Date(new Date(deliveryDate) - new Date(date)).getDay();
-  //     if (day === 0) {
-  //       status = "delivered";
-  //     } else if (day === 1) {
-  //       status = "delivering";
-  //     }
-
-  //     return {
-  //       deliveryDate: deliveryDate.toLocaleString().split(",")[0],
-  //       sendDate: sendDate,
-  //       status: status,
-  //     };
-  //   };
-
-  const ctx = useContext(ListContext);
+  const listContext = useContext(ListContext);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatchState({ type: "CLEAR_ALL" });
     //  let dateObj = formatDate(state.sendDate);
 
-    ctx.addItem({
+    listContext.addItem({
       ...state,
       // ...dateObj,
       // dateCreation: new Date().toLocaleString(),
     });
   };
 
-  const onAddHandler = () => {
-    console.log("work");
-    // setIsOpen((curValue) => !curValue);
+  const onCancelHandler = () => {
+    modalContext.closeModal();
   };
 
-  return (
-    <>
+  if (!modalContext.isOpened) {
+    return null;
+  }
+
+  return ReactDOM.createPortal(
+    <div className={classes["wrapper-modal"]}>
       <div className={classes.backdrop}></div>
       <div className={classes.modal}>
-        <Cart >
+        <Cart>
           <form className={classes.form}>
             <Input
               placeholder="Send from city"
@@ -167,14 +178,15 @@ const EditModal = (props) => {
               <Button isValid={formIsValid} onClick={onSubmitHandler}>
                 Confirm
               </Button>
-              <Button isValid={true} isCancel={true} onClick={onAddHandler}>
-                Close
+              <Button isValid={true} isCancel={true} onClick={onCancelHandler}>
+                Cancel
               </Button>
             </div>
           </form>
         </Cart>
       </div>
-    </>
+    </div>,
+    document.getElementById("edit-modal")
   );
 };
 

@@ -2,10 +2,22 @@ import EditModal from "../../Modals/EditModal";
 import ButtonControl from "../../UI/Buttons/ButtonControl";
 import DetailedItem from "./DetailedItem";
 import classes from "./Item.module.css";
+import ModalContext from "../../../store/modal-context";
+import { useContext } from "react";
 
 const Item = (props) => {
-  const item = props.item;
-  console.log(props);
+  const { item } = props;
+  //   console.log(props);
+
+  const modalContext = useContext(ModalContext);
+
+  const onEdit = (item) => {
+    console.log("item", item);
+    return function () {
+      modalContext.openModal(item);
+    };
+  };
+
   return (
     <>
       <li className={classes.item}>
@@ -26,18 +38,12 @@ const Item = (props) => {
             >
               Delete
             </ButtonControl>
-            <ButtonControl
-              identifier="edit"
-              onClick={props.onEdit.bind(null, item.id, {
-                ...item,
-                from: "Dnipro",
-              })}
-            >
+            <ButtonControl identifier="edit" onClick={onEdit(item)}>
               Edit
             </ButtonControl>
           </div>
         </div>
-        
+
         <DetailedItem
           type={item.deliveryType}
           sendDate={item.sendDate}

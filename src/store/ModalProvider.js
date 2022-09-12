@@ -7,10 +7,9 @@ let defaultValue = {
 
 const modalReducer = (state, action) => {
   if (action.type === "OPEN") {
+    console.log("ctx-modal", action.item);
     return { isOpened: true, item: action.item };
-  } else if (action.type === "CLOSE") {
-    return { isOpened: false, item: [] };
-  }
+  } else return { isOpened: false, item: [] };
 };
 
 const ModalProvider = (props) => {
@@ -26,7 +25,7 @@ const ModalProvider = (props) => {
     dispatchModalState({ type: "CLOSE" });
   };
   const modalEditContext = {
-    ...state,
+    ...modalState,
     openModal: openModalWindow,
     closeModal: closeModalWindow,
   };

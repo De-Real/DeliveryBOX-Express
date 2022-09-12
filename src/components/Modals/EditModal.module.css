@@ -1,7 +1,8 @@
 .wrapper-modal{
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	width: 100%;
+	height: 100%;
 }
 
 .backdrop{
@@ -10,16 +11,12 @@
 	left: 0;
 	min-width: 100%;
 	min-height: 100%;
-	background-color: rgba(0, 0, 0, 0.578);
+	background-color: rgba(0, 0, 0, 0.925);
 	z-index: 10;
 }
 
 .modal{
 	position: absolute;
 	top: 100px;
-	left: center;
-	width: 200px;
-	height: 200px;
 	z-index: 15;
-
 }

@@ -9,15 +9,13 @@ const DisplayItems = (props) => {
   let contextItems = ctx.items;
 
   let filteredItems = ctx.items;
-  console.log(props.filterParametr);
+
   if (props.filterParametr !== "all") {
     filteredItems = contextItems.filter((item) => {
-      console.log(item.status, props.filterParametr);
       if (item.status !== props.filterParametr) return false;
       return true;
     });
   }
-  console.log("FI", filteredItems);
 
   let items = filteredItems.map((item) => {
     return (
@@ -25,7 +23,6 @@ const DisplayItems = (props) => {
         key={item.id}
         item={item}
         onRemove={ctx.removeItem}
-        onEdit={ctx.editItem}
       ></Item>
     );
   });
