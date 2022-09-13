@@ -12,7 +12,7 @@ const Item = (props) => {
   const modalContext = useContext(ModalContext);
 
   const onEdit = (item) => {
-    console.log("item", item);
+    //  console.log("item", item);
     return function () {
       modalContext.openModal(item);
     };
@@ -38,7 +38,11 @@ const Item = (props) => {
             >
               Delete
             </ButtonControl>
-            <ButtonControl identifier="edit" onClick={onEdit(item)}>
+            <ButtonControl
+              identifier="edit"
+              isDisabled={item.status === "delivered" ? true : false}
+              onClick={onEdit(item)}
+            >
               Edit
             </ButtonControl>
           </div>

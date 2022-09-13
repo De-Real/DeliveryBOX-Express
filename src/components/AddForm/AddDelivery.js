@@ -50,13 +50,13 @@ const AddDelivery = () => {
   }
 
   const [state, dispatchState] = useReducer(proccessValues, {
-    id: Math.random(),
-    from: "Kyiv",
-    to: "Bila Tserkva",
-    deliveryType: "book",
-    sendDate: "2022-08-10",
-    description: "553242",
-    status: "packaging",
+    id: Math.random()*10e15,
+    from: "",
+    to: "",
+    deliveryType: "",
+    sendDate: "",
+    description: "",
+    status: "",
   });
 
   const dispatchValues = (value, valueType) => {

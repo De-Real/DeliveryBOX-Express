@@ -53,11 +53,13 @@ const listReducer = (state, action) => {
     };
   }
   if (action.type === "EDIT") {
-    let { id, item } = action;
+
+    let { id } = action.item;
+
     return {
       items: state.items.map((elem) => {
         if (elem.id !== id) return elem;
-        return { ...elem, ...item };
+        return { ...elem, ...action.item };
       }),
     };
   }
@@ -75,8 +77,8 @@ const ListProvider = (props) => {
     dispatchListAction({ type: "REMOVE", id: id });
   };
 
-  const editItemHandler = (id, item) => {
-    dispatchListAction({ type: "EDIT", id: id, item: item });
+  const editItemHandler = (item) => {
+    dispatchListAction({ type: "EDIT", item: item });
   };
 
   const deliveryContext = {

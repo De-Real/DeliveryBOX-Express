@@ -74,17 +74,15 @@ const EditModal = (props) => {
       new Date(date).getDate() + ((Math.random() * 100) % 3)
     );
 
-    console.log(deliveryDate);
-    console.log(
-      "delDate",
-      new Date(new Date(deliveryDate) - new Date(date)).getDay()
-    );
     let status = "packaging";
-    const day = new Date(new Date(deliveryDate) - new Date(date)).getDay();
-    if (day === 0) {
-      status = "delivered";
-    } else if (day === 1) {
-      status = "delivering";
+    if (new Date(date) < new Date()) {
+      let sendDate = new Date(date);
+      const day = new Date(new Date(deliveryDate) - sendDate).getDate();
+      if (day === 1) {
+        status = "delivered";
+      } else if (day === 2) {
+        status = "delivering";
+      }
     }
 
     return {
@@ -103,13 +101,19 @@ const EditModal = (props) => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatchState({ type: "CLEAR_ALL" });
-    //  let dateObj = formatDate(state.sendDate);
+    let dateObj = { sendDate: sendDate.split("-").reverse().join(".") };
+    if (state.sendDate.split("-").reverse().join(".") !== sendDate) {
+      dateObj = formatDate(state.sendDate);
+    }
 
-    listContext.addItem({
+    listContext.editItem({
+      ...modalContext.item,
       ...state,
-      // ...dateObj,
-      // dateCreation: new Date().toLocaleString(),
+      ...dateObj,
+      lastEdition: new Date().toLocaleString(),
+      edited: true,
     });
+    modalContext.closeModal();
   };
 
   const onCancelHandler = () => {
@@ -125,6 +129,7 @@ const EditModal = (props) => {
       <div className={classes.backdrop}></div>
       <div className={classes.modal}>
         <Cart>
+          <h2> Editing </h2>
           <form className={classes.form}>
             <Input
               placeholder="Send from city"
@@ -174,9 +179,9 @@ const EditModal = (props) => {
             </div>
             {/* 1. add pulse button when form is correct  */}
             {/* 2.end button */}
-            <div>
+            <div className={classes.buttons}>
               <Button isValid={formIsValid} onClick={onSubmitHandler}>
-                Confirm
+                Update
               </Button>
               <Button isValid={true} isCancel={true} onClick={onCancelHandler}>
                 Cancel

@@ -7,7 +7,6 @@ let defaultValue = {
 
 const modalReducer = (state, action) => {
   if (action.type === "OPEN") {
-    console.log("ctx-modal", action.item);
     return { isOpened: true, item: action.item };
   } else return { isOpened: false, item: [] };
 };
