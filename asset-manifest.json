@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/DeliveryBOX-Express/static/css/main.32bc348d.css",
+    "main.js": "/DeliveryBOX-Express/static/js/main.f8599572.js",
+    "static/media/bargains.jpg": "/DeliveryBOX-Express/static/media/bargains.9377e783dc2f1dcda878.jpg",
+    "index.html": "/DeliveryBOX-Express/index.html",
+    "main.32bc348d.css.map": "/DeliveryBOX-Express/static/css/main.32bc348d.css.map",
+    "main.f8599572.js.map": "/DeliveryBOX-Express/static/js/main.f8599572.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.32bc348d.css",
+    "static/js/main.f8599572.js"
+  ]
+}
