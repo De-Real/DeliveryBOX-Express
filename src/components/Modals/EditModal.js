@@ -126,7 +126,7 @@ const EditModal = (props) => {
 
   return ReactDOM.createPortal(
     <div className={classes["wrapper-modal"]}>
-      <div className={classes.backdrop}></div>
+      <div className={classes.backdrop} onClick={modalContext.closeModal}></div>
       <div className={classes.modal}>
         <Cart>
           <h2> Editing </h2>

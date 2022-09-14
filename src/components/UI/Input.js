@@ -1,6 +1,8 @@
 import clss from "./Input.module.css";
+import React from "react";
 
 const Input = (props) => {
+  console.log("I called" + props.text);
   return (
     <div className={clss["input-block"]}>
       <label htmlFor={props.id}>{props.text}</label>
@@ -16,4 +18,4 @@ const Input = (props) => {
   );
 };
 
-export default Input;
+export default React.memo(Input);

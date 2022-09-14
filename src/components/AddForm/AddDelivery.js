@@ -1,4 +1,10 @@
-import { useContext, useEffect, useReducer, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import Button from "../UI/Buttons/Button";
 import Input from "../UI/Input";
 import classes from "./AddDelivery.module.css";
@@ -50,7 +56,7 @@ const AddDelivery = () => {
   }
 
   const [state, dispatchState] = useReducer(proccessValues, {
-    id: Math.random()*10e15,
+    id: Math.random() * 10e15,
     from: "",
     to: "",
     deliveryType: "",
@@ -59,9 +65,9 @@ const AddDelivery = () => {
     status: "",
   });
 
-  const dispatchValues = (value, valueType) => {
+  const dispatchValues = useCallback((value, valueType) => {
     dispatchState({ type: valueType, value: value });
-  };
+  }, []);
 
   const formatDate = (date) => {
     const sendDate = date.split("-").reverse().join(".");
@@ -70,11 +76,6 @@ const AddDelivery = () => {
       new Date(date).getDate() + ((Math.random() * 100) % 3)
     );
 
-    console.log(deliveryDate);
-    console.log(
-      "delDate",
-      new Date(new Date(deliveryDate) - new Date(date)).getDay()
-    );
     let status = "packaging";
     const day = new Date(new Date(deliveryDate) - new Date(date)).getDay();
     if (day === 0) {
@@ -104,14 +105,14 @@ const AddDelivery = () => {
     });
   };
 
-  const onAddHandler = () => {
+  const onShowAdditionHandler = useCallback(() => {
     setIsOpen((curValue) => !curValue);
-  };
+  }, []);
 
   return (
     <Cart>
       {!isOpen && (
-        <Button isValid={true} onClick={onAddHandler}>
+        <Button isValid={true} onClick={onShowAdditionHandler}>
           Add delivery
         </Button>
       )}
@@ -167,7 +168,11 @@ const AddDelivery = () => {
             <Button isValid={formIsValid} onClick={onSubmitHandler}>
               Confirm
             </Button>
-            <Button isValid={true} isCancel={true} onClick={onAddHandler}>
+            <Button
+              isValid={true}
+              isCancel={true}
+              onClick={onShowAdditionHandler}
+            >
               Cancel
             </Button>
           </div>
